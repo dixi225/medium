@@ -3,9 +3,13 @@ import user from "../../routers/user.router";
 import blog from "../../routers/blog.router";
 import userRequire from "../../middlewares/userRequire";
 
-const mainRouter=new Hono()
+const mainRouter=new Hono<{
+    Variables:{
+        id:string
+    }
+}>
 
-// mainRouter.use('/blog/*',userRequire)
+mainRouter.use('/blog/*',userRequire)
 
 mainRouter.route('/user',user)
 mainRouter.route('/blog',blog)

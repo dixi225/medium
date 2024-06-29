@@ -1,12 +1,12 @@
 import { Hono } from "hono";
-import { bulkController } from "../controllers/blog.controller";
+import { bulkController, createPost, getPostsById, updatePost } from "../controllers/blog.controller";
 
 
 const blog=new Hono()
 
+blog.post('/',createPost)
+blog.put('/',updatePost)
+blog.get('/:id',getPostsById)
 blog.get('/bulk',bulkController)
-// blog.post('/')
-// blog.put('/')
-// blog.get('/:id')
 
 export default blog

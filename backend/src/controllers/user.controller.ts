@@ -56,7 +56,7 @@ export const signInController=async(c:Context)=>{
     if(!user) return c.json({message:"user not found"})
     if(user.password!=password) return c.json({message:"Invalid Password"})
         
-    const token=sign(user,c.env.JWT_SECRET)
+    const token=await sign(user,c.env.JWT_SECRET)
 
     return c.json({
         message:"User Valid",
