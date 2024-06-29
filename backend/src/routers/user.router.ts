@@ -4,6 +4,7 @@ import { signInController, signUpController } from "../controllers/user.controll
 
 const user=new Hono()
 
+user.get('/test',(c)=>{return c.text("request recived")})
 user.post('/signin',signInController)
 user.post('/signup',signUpController)
 

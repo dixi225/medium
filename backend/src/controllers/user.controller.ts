@@ -1,27 +1,37 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "@prisma/client/edge"
 import { withAccelerate } from "@prisma/extension-accelerate"
 import { Context } from "hono"
-import jwt from 'jsonwebtoken'
+import {sign} from 'hono/jwt'
 
 export const signUpController=async (c:Context)=>{
     const prisma=new PrismaClient({
     datasourceUrl:c.env.DATABASE_URL
-    }   
-    ).$extends(withAccelerate())
+    }).$extends(withAccelerate())
     const body=await c.req.json()
-    const user=await prisma.user.create({
+    console.log(body)
+    const existingUser=await prisma.user.findUnique({
+        where:{
+            email:body.email
+        },
+        select:{
+            firstName:true
+        }
+    })
+
+    if(existingUser) return c.text("User Already Exists")
+
+     const user=await prisma.user.create({
      data:{
         email: body.email,
         firstName:body.firstName,
         lastName:body.lastName,
         password:body.password,
-        posts:body.posts
      }   
     })
-
-    const{id}=user
+    const payload={id:user.id,
+    password:user.password}
     const scrt=c.env.JWT_SECRET
-    const token=jwt.sign(id,scrt)
+    const token=await sign(payload,scrt)
     return c.json({
         message:"User Created",
         token:token})
@@ -46,7 +56,7 @@ export const signInController=async(c:Context)=>{
     if(!user) return c.json({message:"user not found"})
     if(user.password!=password) return c.json({message:"Invalid Password"})
         
-    const token=jwt.sign(user.id,c.env.JWT_SECRET)
+    const token=sign(user,c.env.JWT_SECRET)
 
     return c.json({
         message:"User Valid",
