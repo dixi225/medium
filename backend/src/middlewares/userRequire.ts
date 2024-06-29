@@ -1,19 +1,19 @@
 import { Context } from "hono";
-import jwt from "jsonwebtoken"
+import {verify} from "hono/jwt"
 
-export default (c:Context,next:any):any=>{
-    const token=c.req.header('aurthorization')
+export default async (c:Context,next:any)=>{
+    const token=c.req.header('Aurthorization')
     if(!token){
         return c.json({
             message:"No Token Found"
         })
     }
-    const decoded:any= jwt.verify(token,c.env.DATABASE_URL)
+    const decoded:any= await verify(token,c.env.JWT_SECRET)
     if(!decoded){
         return c.json({
             message:"Invalid Token Found"
         })
     }
-    c.set('userId',decoded.id)
+    c.set('id',decoded.id)
     next()
 }
