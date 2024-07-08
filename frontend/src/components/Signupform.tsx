@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Axios from 'axios'
- 
+import { BACKEND_URL } from "../config" 
 
 
  const Singupform = () => {
@@ -10,15 +10,26 @@ import Axios from 'axios'
   const[firstName,setFirstName]=useState("")
   const[lastName,setLastName]=useState("")
   const[password,setPassword]=useState("")
+  const navigate=useNavigate() 
 
-  function handleSubmit(e:any):void{
+  async function handleSubmit(e:any){
     e.preventDefault()
-    Axios.post("",{
-      email,
-      firstName,
-      lastName,
-      password,
-    })
+    console.log(email,password,firstName,lastName)
+      try {
+         const response=await Axios.post(`${BACKEND_URL}/api/v1/user/signup`,{
+            email,
+            firstName,
+            lastName,
+            password,
+          })
+          console.log(response)
+          const jwt=response.data
+          localStorage.setItem("token",jwt)
+          navigate('/blog')
+      } catch (error) {
+         console.log(error)
+      }
+
   }
   
    return <div className="h-screen w-full md:max-w-screen-md flex flex-col justify-center items-center">

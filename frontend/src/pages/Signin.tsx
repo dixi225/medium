@@ -1,20 +1,25 @@
 import { ChangeEvent, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
 import Axios from 'axios'
- 
+ import {BACKEND_URL} from '../config'
 
 
  const Signin = () => {
-
+  const navigate=useNavigate()
   const[email,setEmail]=useState("")
   const[password,setPassword]=useState("")
 
-  function handleSubmit(e:any):void{
+  async function handleSubmit(e:any){
     e.preventDefault()
-    Axios.post("",{
+    console.log(BACKEND_URL)
+    const response=await Axios.post(`${BACKEND_URL}/api/v1/user/signin`,{
       email,
       password,
     })
+    const jwt=response.data
+    localStorage.setItem("token",jwt)
+    navigate('/blog')  
   }
   
    return <div className="h-screen w-full  flex flex-col justify-center items-center">

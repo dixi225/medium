@@ -1,5 +1,5 @@
-import Signupform from '../Components/Signupform'
-import Signuphero from '../Components/Signuphero'
+import Signupform from '../components/Signupform'
+import Signuphero from '../components/Signuphero'
 
 
 export default function(){
