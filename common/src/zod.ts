@@ -12,17 +12,17 @@ export const signInBody=z.object({
     password:z.string()
 })
 
-export const createPost=z.object({
+export const createPostBody=z.object({
     title:z.string(),
     content:z.string(),
 })
 
-export const updatePost=z.object({
+export const updatePostBody=z.object({
     title:z.string(),
     content:z.string(),
     id:z.string()
 })
 export type signUpUser=z.infer<typeof signUpBody>
 export type signInUser=z.infer<typeof signInBody>
-export type createPost=z.infer<typeof createPost>
-export type updatePost=z.infer<typeof updatePost>
+export type createPost=z.infer<typeof createPostBody>
+export type updatePost=z.infer<typeof updatePostBody>

@@ -5,8 +5,9 @@
     "deploy": "wrangler deploy --minify src/index.ts"
   },
   "dependencies": {
-    "@dixi225/medium-common": "^1.0.2",
+    "@dixi225/medium-common": "^1.0.3",
     "@prisma/client": "^5.16.1",
+    "@prisma/extension-accelerate": "^1.1.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "hono": "^4.4.9",
